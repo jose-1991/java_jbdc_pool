@@ -1,5 +1,6 @@
 package org.jose.java.jbdc;
 
+import org.jose.java.jbdc.modelo.Categoria;
 import org.jose.java.jbdc.modelo.Producto;
 import org.jose.java.jbdc.repositorio.ProductoRepositorioImpl;
 import org.jose.java.jbdc.repositorio.Repositorio;
@@ -23,11 +24,14 @@ public class EjecucionJdbcInsertar {
 
             System.out.println("========== Insertar nuevo producto ==========");
             Producto producto = new Producto();
-            producto.setNombre("Teclado mecanico");
-            producto.setPrecio(500);
+            producto.setNombre("Teclado Red Dragon mecanico");
+            producto.setPrecio(450);
             producto.setFechaRegistro(new Date());
+            Categoria categoria = new Categoria();
+            categoria.setId(3L);
+            producto.setCategoria(categoria);
 
-            //repositorio.guardar(producto);
+            repositorio.guardar(producto);
 
             System.out.println("Producto guardado con exito");
 
