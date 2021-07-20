@@ -25,11 +25,9 @@ public class EjecucionJdbcInsertar {
             System.out.println("========== Insertar nuevo producto ==========");
             Producto producto = new Producto();
             producto.setNombre("Teclado Red Dragon mecanico");
-            producto.setPrecio(450);
+            producto.setPrecio(700);
             producto.setFechaRegistro(new Date());
-            Categoria categoria = new Categoria();
-            categoria.setId(3L);
-            producto.setCategoria(categoria);
+
 
             repositorio.guardar(producto);
 

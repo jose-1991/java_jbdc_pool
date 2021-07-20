@@ -20,8 +20,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         List<Producto> producto = new ArrayList<>();
 
         try (Statement stmt = getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT p.*, c.nombre as categoria FROM productos as p" +
-                     " inner join categorias as c ON (p.categoria_id) WHERE p.id = ?")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM productos")) {
 
             while (rs.next()) {
                 Producto p = crearProducto(rs);
@@ -59,25 +58,25 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
     @Override
     public void guardar(Producto producto) {
         String sql;
-        if (producto.getId() != null && producto.getId() > 0) {
-            sql = "UPDATE productos SET nombre =?, precio=?, categoria = ?  WHERE (id = ?)";
-        } else {
-            sql = "INSERT INTO productos(nombre, precio, categoria_id, fecha_registro ) VALUES(? , ?, ?, ?)";
-        }
+//        if (producto.getId() != null && producto.getId() > 0) {
+//            sql = "UPDATE productos SET nombre =?, precio=?  WHERE (id = ?)";
+//        } else {
+        sql = "INSERT INTO productos(nombre, precio, fecha_registro) " +
+                " VALUES(?,?,?)";
+//        }
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.executeUpdate();
 
             stmt.setString(1, producto.getNombre());
+
             stmt.setInt(2, producto.getPrecio());
-            stmt.setLong(3,producto.getCategoria().getId());
 
-            if (producto.getId() != null && producto.getId() > 0) {
-                stmt.setLong(4, producto.getId());
-            } else {
-                stmt.setDate(4, new Date(producto.getFechaRegistro().getTime()));
-            }
+            stmt.setDate(3, new Date(producto.getFechaRegistro().getTime()));
 
-            stmt.executeUpdate(sql);
+
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,10 +102,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         p.setNombre(rs.getString("nombre"));
         p.setPrecio(rs.getInt("precio"));
         p.setFechaRegistro(rs.getDate("fecha_registro"));
-        Categoria categoria = new Categoria();
-        categoria.setId(rs.getLong("categoria_id"));
-        categoria.setNombre(rs.getString("categoria"));
-        p.setCategoria(categoria);
+
         return p;
     }
 }
