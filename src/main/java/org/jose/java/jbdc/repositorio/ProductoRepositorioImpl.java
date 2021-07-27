@@ -33,6 +33,24 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
         }
         return producto;
     }
+    public List<String> listarNombre() {
+        List<String> producto = new ArrayList<>();
+
+        try (Statement stmt = getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT nombre FROM productos")) {
+
+            while (rs.next()) {
+
+                Producto p = new Producto();
+                p.setNombre(rs.getString("nombre"));
+                producto.add(p.getNombre());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return producto;
+    }
 
     @Override
     public Producto porId(Long id) {
@@ -66,13 +84,15 @@ public class ProductoRepositorioImpl implements Repositorio<Producto> {
 //        }
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
-            stmt.executeUpdate();
+
 
             stmt.setString(1, producto.getNombre());
 
             stmt.setInt(2, producto.getPrecio());
 
             stmt.setDate(3, new Date(producto.getFechaRegistro().getTime()));
+
+            stmt.executeUpdate();
 
 
 
