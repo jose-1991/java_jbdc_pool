@@ -1,11 +1,13 @@
 package org.jose.java.jbdc.examTopic;
 
 import java.sql.*;
+import java.util.concurrent.CyclicBarrier;
 
 public class Question53 {
     private static String url = "jdbc:mysql://localhost:3306/java_curso?serverTimezone=America/La_Paz";
     private static String username = "root";
     private static String password = "sasa";
+
 
     public static void main(String[] args) throws SQLException {
         Connection conn = DriverManager.getConnection(url, username, password);
